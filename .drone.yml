@@ -1,0 +1,30 @@
+pipeline:
+  build_dotnet:
+    image: microsoft/dotnet 
+    commands:
+      - dotnet restore
+      - dotnet publish -c Release -r linux-x64 -o out
+  publish_dotnet:
+    image: plugins/docker
+    secrets: [ docker_username, docker_password ]
+    repo: josmo/sample-dotnet-grpc
+    tag:
+      - latest
+      - ${DRONE_BUILD_NUMBER}
+    file: Dockerfile
+    insecure: true
+    when:
+      local: false
+      event: [ push ]
+  deploy:
+    image: peloton/drone-rancher
+    url: http://rancher.seattleslow.com
+    secrets: [ rancher_access_key, rancher_secret_key ]
+    service: sample/sample-dotnet-grpc
+    docker_image: josmo/sample-dotnet-grpc:${DRONE_BUILD_NUMBER}
+    start_first: false
+    confirm: true
+    timeout: 260
+    when:
+      local: false
+      event: push

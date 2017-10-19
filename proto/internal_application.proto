@@ -1,0 +1,16 @@
+syntax = "proto3";
+package com.samples.v1;
+
+service InternalApplicationService{
+    rpc GetApplicationStatus(ApplicationStatusRequest) returns (ApplicationStatusResponse);
+}
+
+message ApplicationStatusRequest {
+     int32 applicationId =1;
+}
+
+message ApplicationStatusResponse{
+    int32 statusId =1;
+    string applicationStatus =2;
+    string currentNotes =3;
+};
