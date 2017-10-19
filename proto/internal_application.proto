@@ -1,5 +1,8 @@
 syntax = "proto3";
-package com.samples.v1;
+
+package com.samples;
+
+option csharp_namespace = "Com.Samples.V1";
 
 service InternalApplicationService{
     rpc GetApplicationStatus(ApplicationStatusRequest) returns (ApplicationStatusResponse);
