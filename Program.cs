@@ -19,8 +19,18 @@ namespace sample_dotnet_grpc
             };
             server.Start();
             Console.WriteLine("Status server listening on port " + Port);
+            testGRPC();
             Thread.Sleep(Timeout.Infinite);
             server.ShutdownAsync().Wait(); 
+        }
+        
+        private static void testGRPC()
+        {
+            Channel channel = new Channel("127.0.0.1:50051", ChannelCredentials.Insecure);
+            var client = new InternalApplicationService.InternalApplicationServiceClient(channel);
+            var reply = client.GetApplicationStatus(new ApplicationStatusRequest {ApplicationId = 1 });
+            Console.WriteLine("Greeting: " + reply.ApplicationStatus);
+            
         }
     }
 }

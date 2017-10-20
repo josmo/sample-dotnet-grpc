@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Com.Samples.V1;
@@ -11,7 +12,7 @@ namespace sample_dotnet_grpc
         {
             
             var headers = context.RequestHeaders;
-            var token = headers.Where(item => item.Key == "token").Select(item => item.Value).First();
+            var token = headers.Where(item => item.Key == "token").Select(item => item.Value).FirstOrDefault();
             if (token != null)
             {
                 //Congrats you have a token on the metadata headers ;) This is a great way to pass jwt tokens
@@ -21,6 +22,7 @@ namespace sample_dotnet_grpc
             var myStatusResponse = new ApplicationStatusResponse();
             myStatusResponse.ApplicationStatus = "Active";
             myStatusResponse.CurrentNotes = "Nothing to report on " + applicationId;
+            myStatusResponse.StatusId = 1;
             return Task.FromResult(myStatusResponse);
         }
     }
